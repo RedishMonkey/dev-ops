@@ -1,0 +1,19 @@
+# 🔹 Step 1: Use a minimal Alpine-based Python image
+FROM python:3.9-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the required files (Python script and dependencies)
+COPY requirements.txt .
+COPY logger.py .
+
+# Install only necessary Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose port 5001 for the logging service
+EXPOSE 5001
+
+# Run the logging service when the container starts
+CMD ["python", "logger.py"]
+

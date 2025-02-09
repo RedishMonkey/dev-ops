@@ -1,9 +1,9 @@
 FROM node:14 AS nodeapi-build
 WORKDIR /usr/src/app
 COPY ./ ./nodeapi/
-RUN cd nodeapi && npm install
+RUN cd nodeapi && npm install --only=production
 
-FROM node:14
+FROM node:14-alpine
 WORKDIR /usr/src/app/
 COPY --from=nodeapi-build /usr/src/app/nodeapi/ ./
 RUN ls

@@ -10,14 +10,15 @@ services:
       - webapi
     environment:
       - FEATURE_FLAG=true
+      - NEW_FEATURE_ENABLED=true
 
   api:
     build:
       context: ./nodeapi
     ports:
-      - "5000:5000"
+      - "5000"
     restart: always
-    container_name: api
+    # container_name: api
     depends_on:
       - nginx
       - emongo
@@ -66,5 +67,18 @@ services:
       - "5672:5672"
       - "15672:15672"
 
+  logger:
+    build:
+      context: ./logger  # Path to the logging microservice
+    ports:
+      - "5001:5001"
+    restart: always
+    container_name: logger
+    environment:
+      - LOG_FILE_PATH=/app/logs.txt  # Log file inside the container
+    volumes:
+      - logger_logs:/app/logs  # Persist logs across restarts
+
 volumes:
   emartdb_data:
+  logger_logs:
